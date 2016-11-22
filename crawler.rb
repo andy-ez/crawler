@@ -11,12 +11,11 @@ class Crawler
   def initialize(url)
     raise ArguementError.new('Invalid URL') unless valid_url?(url)
     @url = URI.parse(url)
-    # @url.host = @url.host.start_with?('www.') ? @url.host : 'www.'+@url.host
     @domain = @url.scheme + '://' + @url.host
     @visited_pages = Set.new([@domain])
     @data = []
     get_all_domain_links
-    puts 'Crawling complete. Run the #json_data method to view results.'
+    puts 'Crawling complete:'
   end
 
   def json_data
