@@ -5,7 +5,7 @@ Simple command line run web crawler that visits every reachable page under a dom
 
 == Installation
 
-* Download the project folder then in a terminal session navigate to the projects directory and run:
+* Download the project folder then in a terminal session navigate to the project's directory and run:
 
     bundle install
 
@@ -14,7 +14,7 @@ Simple command line run web crawler that visits every reachable page under a dom
 
 == Instructions
 
-Can be run from the command line passing in a valid url as an argument to the crawl command:
+Application can be run from the command line passing in a valid url as an argument to the crawl command, e.g.:
 
     ./crawler crawl http://example.com
 
