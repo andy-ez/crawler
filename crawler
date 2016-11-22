@@ -1,0 +1,29 @@
+#! /usr/bin/env ruby
+
+require './crawler.rb'
+
+def start_crawling(url)
+  crawler = Crawler.new(url)
+  crawler.json_data
+end
+
+def display_help
+  puts <<-HELP
+A simple web crawler
+
+Commands:
+
+crawl STARTING_URL - crawl a website, note must be valid url.
+  HELP
+end
+
+command = ARGV[0]
+if command == 'crawl'
+  if ARGV[1]
+    start_crawling(ARGV[1])
+  else
+    puts "Error"
+  end
+else
+  display_help
+end

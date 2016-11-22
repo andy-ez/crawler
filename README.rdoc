@@ -1,0 +1,20 @@
+= Web Crawler
+
+Simple command line run web crawler that visits every reachable page under a domain and outputs the URLs of every static asset, grouped by page url.
+
+
+== Installation
+
+* Download the project folder then in a terminal session navigate to the projects directory and run:
+
+    bundle install
+
+  Note this application will require a working Ruby installation.
+
+
+== Instructions
+
+Can be run from the command line passing in a valid url as an argument to the crawl command:
+
+    ./crawler crawl http://example.com
+
