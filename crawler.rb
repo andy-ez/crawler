@@ -8,12 +8,13 @@ require 'json'
 class Crawler
   attr_accessor :url, :domain, :visited_pages, :data
 
-  def initialize(url)
+  def initialize(url, limit = 100)
     raise ArguementError.new('Invalid URL') unless valid_url?(url)
     @url = URI.parse(url)
     @domain = @url.scheme + '://' + @url.host
     @visited_pages = Set.new([@domain])
     @data = []
+    @limit = limit
     get_all_domain_links
     puts 'Crawling complete:'
   end
@@ -35,12 +36,11 @@ class Crawler
 
   def parse_links(links)
     ignore_files = %w(.css .js .gz .txt .zip .jpg .png .jpeg .gif .svg)
-    uris = links.map { |link| URI.join(@domain, URI.encode(link.strip.gsub(/^[^a-zA-Z0-9\/]+/, ''))) }
-    uris.reject! { |uri| ignore_files.any? { |extn| (uri.path || '').end_with?(extn) } }
-    uris.each { |uri| uri.fragment = nil }
-    uris.each { |uri| uri.query = nil }
-    uris.reject { |uri| !valid_url?(uri.to_s) }.uniq!
-    uris.select { |uri| (uri.host == @url.host) || (uri.host == 'www.' + @url.host) }
+    uris = links.map { |link| URI.join(@domain, URI.encode(link.strip.gsub(/^[^a-zA-Z0-9\/]+/, ''))) } # encode to form valid uri
+                .reject { |uri| ignore_files.any? { |extn| (uri.path || '').end_with?(extn) } } # ignore links to pictures, js or css files
+                .each { |uri| uri.fragment = nil; uri.query = nil } # ignore fragment/query params
+                .reject { |uri| !valid_url?(uri.to_s) }.uniq
+                .select { |uri| (uri.host == @url.host) || (uri.host == 'www.' + @url.host) } # only select links with same domain
   end
 
   def get_page_uris(url)
@@ -74,6 +74,7 @@ class Crawler
 
   def visit_all_page_links(uris)
     uris.each do |uri|
+      return if @visited_pages.size >= @limit.to_i
       begin
         unless @visited_pages.include?(uri.to_s)
           @visited_pages << uri.to_s

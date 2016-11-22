@@ -2,9 +2,10 @@
 
 require './crawler.rb'
 
-def start_crawling(url)
-  crawler = Crawler.new(url)
+def start_crawling(url, limit = nil)
+  crawler = limit ? Crawler.new(url, limit) : Crawler.new(url)
   crawler.json_data
+  puts crawler.limit
 end
 
 def display_help
@@ -19,7 +20,9 @@ end
 
 command = ARGV[0]
 if command == 'crawl'
-  if ARGV[1]
+  if ARGV[1] && ARGV[2]
+    start_crawling(ARGV[1], ARGV[2])
+  elsif ARGV[1] 
     start_crawling(ARGV[1])
   else
     puts "Error"

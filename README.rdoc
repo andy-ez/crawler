@@ -14,7 +14,10 @@ Simple command line run web crawler that visits every reachable page under a dom
 
 == Instructions
 
-Application can be run from the command line passing in a valid url as an argument to the crawl command, e.g.:
+* Application can be run from the command line passing in a valid url as an argument to the crawl command, e.g:
 
     ./crawler crawl http://example.com
 
+* As a default a limit of 100 is set on the total number of visited urls. This parameter can be changed by passing in a number as the second arguement after the url, e.g:
+
+    ./crawler crawl http://example.com 400
