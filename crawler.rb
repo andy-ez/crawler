@@ -6,7 +6,7 @@ require 'nokogiri'
 require 'json'
 
 class Crawler
-  attr_accessor :url, :domain, :visited_pages, :data
+  attr_reader :url, :domain, :visited_pages, :data
 
   def initialize(url, limit = 250)
     raise ArguementError.new('Invalid URL') unless valid_url?(url)
@@ -15,6 +15,7 @@ class Crawler
     @visited_pages = Set.new([@domain])
     @data = []
     @limit = limit
+    @links_found = 0
     get_all_domain_links
     puts 'Crawling complete:'
   end
@@ -30,6 +31,7 @@ class Crawler
   end
 
   def get_all_domain_links(starting_url = @domain)
+    puts "Links Found: #{@links_found}"
     page_uris = get_page_uris(starting_url)
     visit_all_page_links(page_uris)
   end
@@ -78,9 +80,11 @@ class Crawler
       begin
         unless @visited_pages.include?(uri.to_s)
           @visited_pages << uri.to_s
+          @links_found += 1
           get_all_domain_links(uri.to_s)
         end
-      rescue OpenURI::HTTPError
+      rescue OpenURI::HTTPError => error
+        puts "Error: #{error}"
       end
     end
   end
