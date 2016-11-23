@@ -5,7 +5,6 @@ require './crawler.rb'
 def start_crawling(url, limit = nil)
   crawler = limit ? Crawler.new(url, limit) : Crawler.new(url)
   crawler.json_data
-  puts crawler.limit
 end
 
 def display_help

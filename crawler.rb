@@ -8,7 +8,7 @@ require 'json'
 class Crawler
   attr_accessor :url, :domain, :visited_pages, :data
 
-  def initialize(url, limit = 100)
+  def initialize(url, limit = 250)
     raise ArguementError.new('Invalid URL') unless valid_url?(url)
     @url = URI.parse(url)
     @domain = @url.scheme + '://' + @url.host
@@ -81,7 +81,6 @@ class Crawler
           get_all_domain_links(uri.to_s)
         end
       rescue OpenURI::HTTPError
-        puts 'Error- Invalid URI'
       end
     end
   end
